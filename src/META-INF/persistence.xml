@@ -7,13 +7,15 @@
 	<persistence-unit name="BookStoreWebsite">
 		<properties>
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/bookstoredb" />
+				value="jdbc:mysql://localhost:3306/bookstoredb?useSSL=false" />
 			<property name="javax.persistence.jdbc.user"
 				value="webstudent" />
 			<property name="javax.persistence.jdbc.password"
 				value="webstudent" />
 			<property name="javax.persistence.jdbc.driver"
 				value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>
