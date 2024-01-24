@@ -1,5 +1,6 @@
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import com.bookstore.entity.Users;
@@ -7,23 +8,37 @@ import com.bookstore.entity.Users;
 public class UsersTest {
 
 	public static void main(String[] args) {
-		Users user1 = new Users();
-		user1.setEmail("sahabix@gmail.com");
-		user1.setFullName("Shaban Lukyamuzi");
-		user1.setPassword("shabix20024");
 
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		
-		entityManager.getTransaction();
-		
-		entityManager.persist(user1);
-		
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		entityManagerFactory.close();
-		
-		System.out.println("A Users object was persisted.");
+		EntityTransaction et = null;
+
+		try {
+			// Get transaction and start
+			et = entityManager.getTransaction();
+			et.begin();
+
+			Users user1 = new Users();
+			user1.setEmail("sahabix@gmail.com");
+			user1.setFullName("Shaban Lukyamuzi");
+			user1.setPassword("shabix20024");
+
+			entityManager.persist(user1);
+			et.commit();
+			System.out.println("A Users object was persisted.");
+			
+		} catch (Exception e) {
+			// If there is an exception rollback changes
+			if (et != null) {
+				et.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			// Close EntityManager
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
 		
 
 	}
