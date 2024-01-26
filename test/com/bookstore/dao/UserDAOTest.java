@@ -55,7 +55,18 @@ class UserDAOTest {
 		Assertions.assertThrows(PersistenceException.class, () -> {
 			userDAO.create(user1);
 		});
-
+	}
+	
+	@Test
+	public void testUpdateUsers() {
+		Users user = new Users();
+		user.setUserId(1);
+		user.setEmail("shabix@amigos.net");
+		user.setFullName("Shabix Lampard");
+		user.setPassword("mySecret");
+		
+		 user = userDAO.update(user);
+		
 	}
 	
     @AfterAll
