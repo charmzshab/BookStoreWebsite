@@ -1,5 +1,6 @@
 package com.bookstore.dao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,12 +19,7 @@ class UserDAOTest {
 	private static EntityManager entityManager;
 	private static UserDAO userDAO;
 
-//	@BeforeClass
-//	public static void setupClass() {
-//		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
-//		entityManager = entityManagerFactory.createEntityManager();
-//		userDAO = new UserDAO(entityManager);
-//	}
+
 
 	@BeforeAll
 	public static void setupAll() {
@@ -50,7 +46,7 @@ class UserDAOTest {
 		Users user1 = new Users();
 		user1.setEmail("jackie@gmail.com");
 		user1.setFullName("JAckie Chan");
-		// user1.setPassword("shabix20024");
+		// user1.setPassword("shabix20024"); error is thrown because password is required
 
 		Assertions.assertThrows(PersistenceException.class, () -> {
 			userDAO.create(user1);
@@ -66,6 +62,10 @@ class UserDAOTest {
 		user.setPassword("mySecret");
 		
 		 user = userDAO.update(user);
+		 String expected = "mySecret";
+		 String result = user.getPassword();
+		 
+		 assertEquals(expected,result);
 		
 	}
 	
