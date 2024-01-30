@@ -1,6 +1,9 @@
 package com.bookstore.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,8 +22,6 @@ class UserDAOTest {
 	private static EntityManager entityManager;
 	private static UserDAO userDAO;
 
-
-
 	@BeforeAll
 	public static void setupAll() {
 		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
@@ -37,7 +38,7 @@ class UserDAOTest {
 		user1.setPassword("shabix20024");
 
 		user1 = userDAO.create(user1);
-	
+
 		assertTrue(user1.getUserId() > 0);
 	}
 
@@ -46,13 +47,14 @@ class UserDAOTest {
 		Users user1 = new Users();
 		user1.setEmail("jackie@gmail.com");
 		user1.setFullName("JAckie Chan");
-		// user1.setPassword("shabix20024"); error is thrown because password is required
+		// user1.setPassword("shabix20024"); error is thrown because password is
+		// required
 
 		Assertions.assertThrows(PersistenceException.class, () -> {
 			userDAO.create(user1);
 		});
 	}
-	
+
 	@Test
 	public void testUpdateUsers() {
 		Users user = new Users();
@@ -60,19 +62,56 @@ class UserDAOTest {
 		user.setEmail("shabix@amigos.net");
 		user.setFullName("Shabix Lampard");
 		user.setPassword("mySecret");
-		
-		 user = userDAO.update(user);
-		 String expected = "mySecret";
-		 String result = user.getPassword();
-		 
-		 assertEquals(expected,result);
-		
+
+		user = userDAO.update(user);
+		String expected = "mySecret";
+		String result = user.getPassword();
+
+		assertEquals(expected, result);
+
+	}
+
+	@Test
+	public void testGetUsersFound() {
+		Integer userId = 19;
+		Users user = userDAO.get(userId);
+		assertNotNull(user);
+
 	}
 	
-    @AfterAll
-    public static void tearDownAll() {// Close EntityManager
+	@Test
+	public void testUsersNotFound() {
+		Integer userId = 1;
+		Users user = userDAO.get(userId);
+		
+		assertNull(user);
+	}
+	
+
+	@Test
+	public void testDeleteUsers() {
+		Integer userId = 19;
+		userDAO.delete(userId);
+		
+		Users user = userDAO.get(userId);
+		
+		assertNull(user);
+
+	}
+	
+	@Test
+	public void testDeleteNonExistUser() {
+		Integer userId = 19;
+		
+		assertThrows(Exception.class, () -> {
+			userDAO.delete(userId);
+		});
+	}
+
+	@AfterAll
+	public static void tearDownAll() {// Close EntityManager
 		entityManager.close();
 		entityManagerFactory.close();
-    }
+	}
 
 }
