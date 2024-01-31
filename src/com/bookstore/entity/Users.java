@@ -10,7 +10,8 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName")
+	@NamedQuery(name="Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName"),
+	@NamedQuery(name="Users.countAll", query = "SELECT Count(*) FROM Users u")
 	
 })
 public class Users {

@@ -5,6 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -106,6 +109,23 @@ class UserDAOTest {
 		assertThrows(Exception.class, () -> {
 			userDAO.delete(userId);
 		});
+	}
+	
+	
+	@Test
+	public void testListAllUsers() {
+		
+		List<Users> users = userDAO.listAll();
+		
+		assertTrue(users.size() > 0);
+	}
+	
+	@Test
+	public void testCount() {
+		long totalUsers = userDAO.count();
+		long expected = 4;
+		
+		assertEquals(expected, totalUsers);
 	}
 
 	@AfterAll
