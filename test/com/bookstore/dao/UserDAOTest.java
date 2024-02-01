@@ -36,9 +36,9 @@ class UserDAOTest {
 	void testCreateUsers() {
 
 		Users user1 = new Users();
-		user1.setEmail("trump@gmail.com");
-		user1.setFullName("Michelle Obama");
-		user1.setPassword("shabix20024");
+		user1.setEmail("havertz@gmail.com");
+		user1.setFullName("Franz Havertz");
+		user1.setPassword("amigoscode");
 
 		user1 = userDAO.create(user1);
 
