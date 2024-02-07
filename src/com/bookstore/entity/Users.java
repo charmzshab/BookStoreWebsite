@@ -20,6 +20,10 @@ public class Users {
 	private String fullName;
 	private String password;
 
+	public Users() {
+		super();
+	}
+
 	@Column(name="user_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -29,6 +33,13 @@ public class Users {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public Users(String email, String fullName, String password) {
+		super();
+		this.email = email;
+		this.fullName = fullName;
+		this.password = password;
 	}
 
 	public String getEmail() {

@@ -16,6 +16,10 @@
 			<a href="user_form.jsp">Create New User</a>
 		</h3>
 	</diV>
+	<c:if test="${message != null}">
+		<div align="center"><h4><i>${message}</i></h4></div>
+	</c:if>
+
 	<diV align="center">
 		<table border="1" cellpadding="5">
 			<tr>
@@ -31,10 +35,7 @@
 					<td>${user.userId}</td>
 					<td>${user.email}</td>
 					<td>${user.fullName}</td>
-					<td>
-					<a href="">Edit</a> &nbsp;
-					<a href="">Delete</a>
-					</td>
+					<td><a href="">Edit</a> &nbsp; <a href="">Delete</a></td>
 
 				</tr>
 			</c:forEach>
