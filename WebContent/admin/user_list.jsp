@@ -13,7 +13,7 @@
 	<diV align="center">
 		<h2>Users Management</h2>
 		<h3>
-			<a href="">Create New User</a>
+			<a href="user_form.jsp">Create New User</a>
 		</h3>
 	</diV>
 	<diV align="center">
