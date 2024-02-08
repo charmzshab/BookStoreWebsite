@@ -29,14 +29,12 @@ public class UserServices {
 		this.request = request;
 		this.response = response;
 	}
-	
-	public void listUser() 
-			throws ServletException, IOException{
+
+	public void listUser() throws ServletException, IOException {
 		listUser(null);
 	}
 
-	public void listUser( String message)
-			throws ServletException, IOException {
+	public void listUser(String message) throws ServletException, IOException {
 		List<Users> listUsers = userDAO.listAll();
 		request.setAttribute("listUsers", listUsers);
 		if (message != null) {
@@ -48,13 +46,24 @@ public class UserServices {
 		requestDispatcher.forward(request, response);
 	}
 
-	public void createUser()
-			throws ServletException, IOException {
+	public void createUser() throws ServletException, IOException {
 		String email = request.getParameter("mail");
 		String fullName = request.getParameter("fullname");
 		String password = request.getParameter("password");
 
-		Users user = new Users(email, fullName, password);
-		userDAO.create(user);
+		Users existUser = userDAO.findByEmail(email);
+
+		if (existUser != null) {
+			String message = "Could not create user. A user with email: "+ email + " already exists";
+			request.setAttribute("message", message);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
+			requestDispatcher.forward(request, response);
+			
+		} else {
+
+			Users user = new Users(email, fullName, password);
+			userDAO.create(user);
+			listUser( "A new user created successfully");
+		}
 	}
 }
