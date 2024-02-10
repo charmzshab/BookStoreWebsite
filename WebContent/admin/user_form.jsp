@@ -23,6 +23,15 @@
 	</diV>
 
 	<diV align="center">
+		<c:if test="${user != null}">
+			<form id="form-1" action="update_user" method="post"
+			onsubmit="return validateFormInput() ">
+			<input type="hidden" name="userId" value=${user.userId}>
+			</c:if>
+		<c:if test="${user == null}">
+			<form id="form-1" action="create_user" method="post"
+			onsubmit="return validateFormInput() ">
+			</c:if>
 		<form id="form-1" action="create_user" method="post"
 			onsubmit="return validateFormInput() ">
 			<table id="table-1">
@@ -35,7 +44,7 @@
 					<tr>
 						<td align="right">Full Name:</td>
 						<td><input type="text" name="fullname" id="name" size="20"
-							value=${user.fullName}></td>
+							value=${fullName}></td>
 					</tr>
 					<tr>
 						<td align="right">Password:</td>

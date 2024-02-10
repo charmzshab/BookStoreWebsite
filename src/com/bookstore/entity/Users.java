@@ -9,25 +9,29 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQueries({
-	@NamedQuery(name="Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName"),
-	@NamedQuery(name="Users.countAll", query = "SELECT Count(*) FROM Users u"),
-	@NamedQuery(name="Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email")
-	
+@NamedQueries({ @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName"),
+		@NamedQuery(name = "Users.countAll", query = "SELECT Count(*) FROM Users u"),
+		@NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email")
+
 })
 public class Users {
 	private Integer userId;
 	private String email;
 	private String fullName;
+
+	public Users(Integer userId, String email, String fullName, String password) {
+		this(email, fullName, password);
+		this.userId = userId;
+	}
+
 	private String password;
 
 	public Users() {
-		super();
 	}
 
-	@Column(name="user_id")
+	@Column(name = "user_id")
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer getUserId() {
 		return userId;
 	}
@@ -51,7 +55,7 @@ public class Users {
 		this.email = email;
 	}
 
-	@Column(name="full_name")
+	@Column(name = "full_name")
 	public String getFullName() {
 		return fullName;
 	}
