@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.bookstore.service.UserServices;
 
-/**
- * Servlet implementation class CreateUserServlet
- */
+
 @WebServlet("/admin/create_user")
 public class CreateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

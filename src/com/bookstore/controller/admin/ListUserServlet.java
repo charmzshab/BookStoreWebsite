@@ -26,7 +26,6 @@ public class ListUserServlet extends HttpServlet {
 		
 		UserServices userServices = new UserServices(request, response);
 		userServices.listUser();
-		
 	}
 
 }
