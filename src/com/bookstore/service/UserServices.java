@@ -54,16 +54,16 @@ public class UserServices {
 		Users existUser = userDAO.findByEmail(email);
 
 		if (existUser != null) {
-			String message = "Could not create user. A user with email: "+ email + " already exists";
+			String message = "Could not create user. A user with email: " + email + " already exists";
 			request.setAttribute("message", message);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
 			requestDispatcher.forward(request, response);
-			
+
 		} else {
 
 			Users user = new Users(email, fullName, password);
 			userDAO.create(user);
-			listUser( "A new user created successfully");
+			listUser("A new user created successfully");
 		}
 	}
 
@@ -73,44 +73,61 @@ public class UserServices {
 		String editPage = "user_form.jsp";
 		String fullName = user.getFullName();
 		fullName = fullName.replace(" ", "&nbsp;");
-		
+
+//		if (user == null) {
+//			String message = "Could not find user with ID " + userId;
+//
+//			request.setAttribute("message", message);
+//
+//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
+//			requestDispatcher.forward(request, response);
+//
+//		}
+
 		request.setAttribute("fullName", fullName);
 		request.setAttribute("user", user);
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
 		requestDispatcher.forward(request, response);
 
-		
-		
 	}
 
 	public void updateUser() throws ServletException, IOException {
-		
+
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		String email = request.getParameter("mail");
 		String fullName = request.getParameter("fullname");
 		String password = request.getParameter("password");
-		
+
 		Users userById = userDAO.get(userId);
-		
+
 		Users userByEmail = userDAO.findByEmail(email);
-		
-		if(userByEmail != null && userByEmail.getUserId() != userById.getUserId()) {
-			String message = "Could not update user. User with email "+ email + " already exists.";
+
+		if (userByEmail != null && userByEmail.getUserId() != userById.getUserId()) {
+			String message = "Could not update user. User with email " + email + " already exists.";
 			request.setAttribute("message", message);
-			
+
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
 			requestDispatcher.forward(request, response);
-			
+
 		}
-		
-		
-		Users user = new Users(userId, email,fullName,password);
-		
+
+		Users user = new Users(userId, email, fullName, password);
+
 		userDAO.update(user);
-		
+
 		String message = "User has been updated successfully";
-		
+
 		listUser(message);
+
+	}
+
+	public void deleteUser() throws ServletException, IOException {
+		int userId = Integer.parseInt(request.getParameter("id"));
+		userDAO.delete(userId);
+		
+		String message = "User has been deleted successfully";
+		listUser(message);
+		
 		
 	}
 }
