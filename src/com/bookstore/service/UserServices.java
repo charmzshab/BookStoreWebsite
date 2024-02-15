@@ -74,16 +74,6 @@ public class UserServices {
 		String fullName = user.getFullName();
 		fullName = fullName.replace(" ", "&nbsp;");
 
-//		if (user == null) {
-//			String message = "Could not find user with ID " + userId;
-//
-//			request.setAttribute("message", message);
-//
-//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
-//			requestDispatcher.forward(request, response);
-//
-//		}
-
 		request.setAttribute("fullName", fullName);
 		request.setAttribute("user", user);
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);

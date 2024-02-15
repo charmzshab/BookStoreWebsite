@@ -8,9 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import org.junit.jupiter.api.AfterAll;
@@ -20,16 +17,20 @@ import org.junit.jupiter.api.Test;
 
 import com.bookstore.entity.Users;
 
-class UserDAOTest {
-	private static EntityManagerFactory entityManagerFactory;
-	private static EntityManager entityManager;
+class UserDAOTest extends BaseDAOTest {
 	private static UserDAO userDAO;
 
 	@BeforeAll
-	public static void setupAll() {
-		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
-		entityManager = entityManagerFactory.createEntityManager();
+	static void setUpBeforeClass() throws Exception {
+		
+		BaseDAOTest.setUpBeforeClass();
 		userDAO = new UserDAO(entityManager);
+	}
+
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+		// Close EntityManager
+		BaseDAOTest.tearDownAfterClass();
 	}
 
 	@Test
@@ -135,11 +136,5 @@ class UserDAOTest {
 		
 		assertNotNull(user);
 	}
-
-	@AfterAll
-	public static void tearDownAll() {// Close EntityManager
-		entityManager.close();
-		entityManagerFactory.close();
-	}
-
+	
 }

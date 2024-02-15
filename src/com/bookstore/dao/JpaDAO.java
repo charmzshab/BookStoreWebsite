@@ -1,15 +1,9 @@
 package com.bookstore.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
-
-import com.bookstore.entity.Users;
 
 public class JpaDAO<E> {
 	protected EntityManager entityManager; // injected by the client code such as the DAO classes
