@@ -22,7 +22,7 @@ class UserDAOTest extends BaseDAOTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		
+
 		BaseDAOTest.setUpBeforeClass();
 		userDAO = new UserDAO(entityManager);
 	}
@@ -82,59 +82,57 @@ class UserDAOTest extends BaseDAOTest {
 		assertNotNull(user);
 
 	}
-	
+
 	@Test
 	public void testUsersNotFound() {
 		Integer userId = 1;
 		Users user = userDAO.get(userId);
-		
+
 		assertNull(user);
 	}
-	
 
 	@Test
 	public void testDeleteUsers() {
 		Integer userId = 19;
 		userDAO.delete(userId);
-		
+
 		Users user = userDAO.get(userId);
-		
+
 		assertNull(user);
 
 	}
-	
+
 	@Test
 	public void testDeleteNonExistUser() {
 		Integer userId = 19;
-		
+
 		assertThrows(Exception.class, () -> {
 			userDAO.delete(userId);
 		});
 	}
-	
-	
+
 	@Test
 	public void testListAllUsers() {
-		
+
 		List<Users> users = userDAO.listAll();
-		
+
 		assertTrue(users.size() > 0);
 	}
-	
+
 	@Test
 	public void testCount() {
 		long totalUsers = userDAO.count();
 		long expected = 4;
-		
+
 		assertEquals(expected, totalUsers);
 	}
-	
+
 	@Test
 	public void testFindByEmail() {
 		String email = "drogba@chelsea.net";
 		Users user = userDAO.findByEmail(email);
-		
+
 		assertNotNull(user);
 	}
-	
+
 }

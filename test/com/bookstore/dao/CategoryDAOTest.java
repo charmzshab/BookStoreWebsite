@@ -1,13 +1,20 @@
 package com.bookstore.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.bookstore.entity.Category;
+import com.bookstore.entity.Users;
 
 class CategoryDAOTest extends BaseDAOTest {
 	private static CategoryDAO categoryDAO;
@@ -34,27 +41,52 @@ class CategoryDAOTest extends BaseDAOTest {
 
 	@Test
 	void testUpdateCategory() {
-		fail("Not yet implemented");
+		Category newCat = new Category("Core Java");
+		newCat.setCategoryId(11);
+
+		Category category = categoryDAO.update(newCat);
+
+		assertEquals(newCat.getName(), category.getName());
+
 	}
 
 	@Test
 	void testGet() {
-		fail("Not yet implemented");
+		Integer catId = 13;
+		Category category = categoryDAO.get(catId);
+		
+		assertNotNull(category);
 	}
 
 	@Test
 	void testDeleteObject() {
-		fail("Not yet implemented");
+		Integer catId = 13;
+		
+		categoryDAO.delete(catId);
+
+		Category category = categoryDAO.get(catId);
+
+		assertNull(category);
+
+		
 	}
 
 	@Test
 	void testListAll() {
-		fail("Not yet implemented");
+		List<Category> categories = categoryDAO.listAll();
+		
+		categories.forEach(cat -> System.out.println(cat.getName()));
+		
+		assertTrue(categories.size() > 0);
 	}
 
 	@Test
 	void testCount() {
-		fail("Not yet implemented");
+		long totalCategories = categoryDAO.count();
+		long expected = 2;
+		
+		assertEquals(expected,totalCategories);
+		
 	}
 
 }
