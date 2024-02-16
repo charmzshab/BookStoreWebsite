@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.bookstore.entity.Category;
+import com.bookstore.entity.Users;
 
 public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category> {
 
@@ -19,7 +20,6 @@ public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category
 
 	@Override
 	public Category update(Category category) {
-
 		return super.update(category);
 	}
 
@@ -43,6 +43,17 @@ public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category
 	@Override
 	public long count() {
 		return super.countWithNamedQuery("Category.countAll");
+	}
+
+		
+	public Category findByCategoryName(String categoryName) {
+		List<Category> listCategory = super.findWithNamedQuery("Category.findByName", "name", categoryName);
+		
+		if (listCategory != null && listCategory.size() > 0) {
+			return listCategory.get(0);
+		}
+
+		return null;
 	}
 
 	
