@@ -56,7 +56,7 @@ public class CategoryServices {
 		} else {
 			Category category = new Category(categoryName);
 			categoryDAO.create(category);
-			listCategory("A new user created successfully");
+			listCategory("A new category created successfully");
 		}
 	}
 	

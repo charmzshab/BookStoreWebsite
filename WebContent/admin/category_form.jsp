@@ -39,7 +39,7 @@
 					<tr>
 						<td align="right">Name:</td>
 						<td><input type="text" name="categoryName" id="category"
-							size="20" value=${category.name}></td>
+							size="20" value=${categoryName}></td>
 					</tr>
 					<tr>
 					<tr>
