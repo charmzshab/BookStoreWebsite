@@ -112,6 +112,14 @@ class BookDAOTest extends BaseDAOTest {
 		Book book = bookDAO.get(bookId);
 		assertNotNull(book);
 	}
+	
+	
+	@Test
+	public void testFindByBookTitle() {
+		String bookTitle = "Effective Java (3rd Edition)";
+		Book book = bookDAO.findByBookTitle(bookTitle);
+		assertNotNull(book);
+	}
 
 	@Test
 	public void testDeleteBookFail() {
