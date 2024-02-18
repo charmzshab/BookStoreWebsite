@@ -1,8 +1,8 @@
 package com.bookstore.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,8 +11,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -104,22 +108,35 @@ class BookDAOTest extends BaseDAOTest {
 
 	@Test
 	public void testGet() {
-		fail("Not yet implemented");
+		Integer bookId = 32;
+		Book book = bookDAO.get(bookId);
+		assertNotNull(book);
 	}
 
 	@Test
-	public void testDeleteObject() {
-		fail("Not yet implemented");
+	public void testDeleteBookFail() {
+		Integer bookId = 100; // book doesn't exist
+
+		Assertions.assertThrows(EntityNotFoundException.class, () -> {
+			bookDAO.delete(bookId);
+			;
+		});
+
 	}
 
 	@Test
 	public void testListAll() {
-		fail("Not yet implemented");
+		List<Book> books = bookDAO.listAll();
+
+		assertTrue(books.size() > 0);
 	}
 
 	@Test
 	public void testCount() {
-		fail("Not yet implemented");
+		long totalBooks = bookDAO.count();
+		long expected = 1;
+
+		assertEquals(expected, totalBooks);
 	}
 
 }
