@@ -4,6 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
+
 <meta charset="ISO-8859-1">
 <title>Create New User - Evergreen Bookstore Administration</title>
 </head>
@@ -24,54 +27,44 @@
 
 	<diV align="center">
 		<c:if test="${user != null}">
-			<form id="form-1" action="update_user" method="post"
-			onsubmit="return validateFormInput() ">
-			<input type="hidden" name="userId" value=${user.userId}>
-			</c:if>
+			<form id="userForm" action="update_user" method="post"">
+				<input type="hidden" name="userId" value=${user.userId}>
+		</c:if>
 		<c:if test="${user == null}">
-			<form id="form-1" action="create_user" method="post"
-			onsubmit="return validateFormInput() ">
-			</c:if>
-		<form id="form-1" action="create_user" method="post"
-			onsubmit="return validateFormInput() ">
-			<table id="table-1">
-				<tbody>
-					<tr>
-						<td align="right">Email:</td>
-						<td><input type="email" name="mail" id="email" size="20"
-							value=${user.email}></td>
-					</tr>
-					<tr>
-						<td align="right">Full Name:</td>
-						<td><input type="text" name="fullname" id="name" size="20"
-							value=${fullName}></td>
-					</tr>
-					<tr>
-						<td align="right">Password:</td>
-						<td><input type="password" name="password" id="password"
-							size="20" value=${user.password}></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td colspan="2" align="center"><input type="submit"
-							value="Save:"> <input type="button" value="Cancel"
-							onClick="javascript:history.go(-1);"></td>
-				</tbody>
-			</table>
+			<form id="userForm" action="create_user" method="post">
+		</c:if>
+		<table class="form">
+			<tbody>
+				<tr>
+					<td align="right">Email:</td>
+					<td align="left"><input type="text" name="mail" id="email"
+						size="20" value=${user.email}></td>
+				</tr>
+				<tr>
+					<td align="right">Full Name:</td>
+					<td align="left"><input type="text" name="fullname" id="name"
+						size="20" value=${fullName}></td>
+				</tr>
+				<tr>
+					<td align="right">Password:</td>
+					<td align="left"><input type="password" name="password"
+						id="password" size="20" value=${user.password}></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center"><input type="submit"
+						value="Save:"> <input type="button" value="Cancel"
+						onClick="javascript:history.go(-1);"></td>
+			</tbody>
+		</table>
 		</form>
 	</diV>
 	<jsp:directive.include file="footer.jsp" />
 </body>
+
 <script type="text/javascript">
-	//const email2 = document.querySelector('input[type="email"]');
-
-	//email2.addEventListener("keyup",()=>{
-
-	//	console.log("hi");
-	//});
-
 	function validateFormInput() {
 		const emailField = document.getElementById("email");
 		const fullNameField = document.getElementById("name");
@@ -95,5 +88,33 @@
 			return false;
 		}
 	}
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#userForm").validate({
+			rules : {
+				mail : {
+					required : true,
+					mail : true
+				},
+				fullname : "required",
+				password : "required",
+			},
+
+			messages : {
+				mail : {
+					required : "Please enter email",
+					mail : "Please enter a valid email address"
+				},
+				fullname : "Please enter full name",
+				password : "Please enter password"
+			}
+		});
+
+		$("#buttonCancel").click(function() {
+			history.go(-1);
+		});
+
+	});
 </script>
 </html>
