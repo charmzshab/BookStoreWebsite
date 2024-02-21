@@ -30,13 +30,11 @@
 
 	<diV align="center">
 		<c:if test="${book != null}">
-			<form id="bookForm" action="update_book" method="post"
-				onsubmit="return validateFormInput() ">
+			<form id="bookForm" action="update_book" method="post">
 				<input type="hidden" name="bookId" value=${book.bookId}>
 		</c:if>
 		<c:if test="${book == null}">
-			<form id="bookForm" action="create_book" method="post"
-				onsubmit="return validateFormInput() ">
+			<form id="bookForm" action="create_book" method="post">
 		</c:if>
 		<table class="form">
 			<tbody>
@@ -71,8 +69,10 @@
 				</tr>
 				<tr>
 					<td align="right">Book Image:</td>
-					<td><input type="file" name="bookImage" id="bookImage"
-						size="20"></td>
+					<td align="left">
+						<input type="file" name="bookImage" id="bookImage"	size="20"/><br />
+						<img id="thumbnail" alt="Image Preview" style="width: 20%; margin-top:10px">
+					</td>
 				</tr>
 				<tr>
 					<td align="right">Price:</td>
@@ -102,23 +102,30 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#publishDate').datepicker();
-		$("#userForm").validate({
+		$('#bookImage').change(function(){
+			showImageThumbnail(this);
+			});
+		$("#bookForm").validate({
 			rules : {
-				mail : {
-					required : true,
-					mail : true
-				},
-				fullname : "required",
-				password : "required",
+				category : "required",
+				title : "required",
+				author : "required",
+				isbn : "required",
+				publishDate : "required",
+				bookImage : "required",
+				price : "required",
+				description: "required"
 			},
 
 			messages : {
-				mail : {
-					required : "Please enter email",
-					mail : "Please enter a valid email address"
-				},
-				fullname : "Please enter full name",
-				password : "Please enter password"
+				category: "Please enter book category",
+				title : "Please enter book title",
+				author : "Please enter author's name",
+				isbn : "Please enter isbn number",
+				publishDate : "Please enter publish date",
+				bookImage : "Please choose the book image",
+				price : "Please enter the book price",
+				description: "Please enter book description"
 			}
 		});
 
@@ -127,6 +134,20 @@
 		});
 
 	});
+
+	function showImageThumbnail(fileInput){
+			let file = fileInput.files[0];
+
+			let reader = new FileReader();
+
+			reader.onload = function(e){
+				$('#thumbnail').attr('src', e.target.result);
+				
+				};
+
+				reader.readAsDataURL(file);
+
+		}
 </script>
 
 </html>
