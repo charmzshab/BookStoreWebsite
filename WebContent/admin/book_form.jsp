@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Create New Book - Evergreen Bookstore Administration</title>
-<link href="../css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+<link href="../css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
 
 <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
@@ -30,11 +31,13 @@
 
 	<diV align="center">
 		<c:if test="${book != null}">
-			<form id="bookForm" action="update_book" method="post">
-				<input type="hidden" name="bookId" value=${book.bookId}>
+			<form name="bookForm" id="bookForm" action="update_book" method="post"
+				enctype="multipart/form-data">
+				<input type="hidden" name="bookId" value=${book.bookId } />
 		</c:if>
 		<c:if test="${book == null}">
-			<form id="bookForm" action="create_book" method="post">
+			<form name="bookForm" id="bookForm" action="create_book" method="post"
+				enctype="multipart/form-data">
 		</c:if>
 		<table class="form">
 			<tbody>
@@ -42,20 +45,26 @@
 					<td align="right">Category:</td>
 					<td><select name="category">
 							<c:forEach items="${listCategory}" var="category">
-								<option value="${category.categoryId}">
-									${category.name}</option>
+								<c:if test="${category.categoryId eq book.category.categoryId}">
+									<option value="${category.categoryId}" selected>
+								</c:if>
+								<c:if test="${category.categoryId ne book.category.categoryId}">
+									<option value="${category.categoryId}">
+								</c:if>
+								${category.name}
+								</option>
 							</c:forEach>
 					</select></td>
 				</tr>
 				<tr>
 					<td align="right">Title:</td>
 					<td><input type="text" name="title" id="title" size="20"
-						value=${book.title}></td>
+						value=${title}></td>
 				</tr>
 				<tr>
 					<td align="right">Author:</td>
 					<td><input type="text" name="author" id="author" size="20"
-						value=${book.author}></td>
+						value=${author}></td>
 				</tr>
 				<tr>
 					<td align="right">ISBN:</td>
@@ -65,14 +74,14 @@
 				<tr>
 					<td align="right">Publish Date:</td>
 					<td><input type="text" name="publishDate" id="publishDate"
-						size="20" value=${book.publishDate}></td>
+						size="20" value="<fmt:formatDate pattern='MM/dd/yyyy' value='${book.publishDate }' />" /></td>
 				</tr>
 				<tr>
 					<td align="right">Book Image:</td>
-					<td align="left">
-						<input type="file" name="bookImage" id="bookImage"	size="20"/><br />
-						<img id="thumbnail" alt="Image Preview" style="width: 20%; margin-top:10px">
-					</td>
+					<td align="left"><input type="file" name="bookImage"
+						id="bookImage" size="20" /><br /> <img id="thumbnail"
+						alt="Image Preview" style="width: 20%; margin-top: 10px"
+						src="data:image/jpg;base64,${book.base64Image }"></td>
 				</tr>
 				<tr>
 					<td align="right">Price:</td>
@@ -82,8 +91,7 @@
 				<tr>
 					<td align="right">Description:</td>
 					<td align="left"><textarea id="description" name="description"
-							rows="5" cols="50">
-</textarea></td>
+							rows="5" cols="50">${description}</textarea></td>
 				</tr>
 
 				<tr>
@@ -93,6 +101,7 @@
 					<td colspan="2" align="center"><input type="submit"
 						value="Save:"> <input type="button" value="Cancel"
 						onClick="javascript:history.go(-1);"></td>
+				</tr>
 			</tbody>
 		</table>
 		</form>
@@ -100,11 +109,21 @@
 	<jsp:directive.include file="footer.jsp" />
 </body>
 <script type="text/javascript">
+	// Get a reference to our file input
+	//const fileInput = document.querySelector('input[type="file"]');
+	//fileInput.onchange = () => {
+	//  const selectedFile = fileInput.files[0];
+	//  console.log(selectedFile);
+	//}
+
 	$(document).ready(function() {
+
+
 		$('#publishDate').datepicker();
-		$('#bookImage').change(function(){
+		//$('#bookImage').attr('value') = "selected";
+		$('#bookImage').change(function() {
 			showImageThumbnail(this);
-			});
+		});
 		$("#bookForm").validate({
 			rules : {
 				category : "required",
@@ -114,18 +133,18 @@
 				publishDate : "required",
 				bookImage : "required",
 				price : "required",
-				description: "required"
+				description : "required"
 			},
 
 			messages : {
-				category: "Please enter book category",
+				category : "Please enter book category",
 				title : "Please enter book title",
 				author : "Please enter author's name",
 				isbn : "Please enter isbn number",
 				publishDate : "Please enter publish date",
 				bookImage : "Please choose the book image",
 				price : "Please enter the book price",
-				description: "Please enter book description"
+				description : "Please enter book description"
 			}
 		});
 
@@ -135,19 +154,20 @@
 
 	});
 
-	function showImageThumbnail(fileInput){
-			let file = fileInput.files[0];
+	function showImageThumbnail(fileInput) {
+		let file = fileInput.files[0];
 
-			let reader = new FileReader();
+		console.log(file);
 
-			reader.onload = function(e){
-				$('#thumbnail').attr('src', e.target.result);
-				
-				};
+		let reader = new FileReader();
 
-				reader.readAsDataURL(file);
+		reader.onload = function(e) {
+			$('#thumbnail').attr('src', e.target.result);
+			console.log(e.target.result);
+		};
 
-		}
+		reader.readAsDataURL(file);
+	}
 </script>
 
 </html>

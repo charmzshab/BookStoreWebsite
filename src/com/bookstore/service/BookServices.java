@@ -1,14 +1,19 @@
 package com.bookstore.service;
 
-
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.bookstore.dao.BookDAO;
 import com.bookstore.dao.CategoryDAO;
@@ -46,8 +51,7 @@ public class BookServices {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
 		requestDispatcher.forward(request, response);
 	}
-	
-	
+
 	public void showBookNewForm() throws ServletException, IOException {
 		List<Category> listCategory = categoryDAO.listAll();
 
@@ -55,79 +59,146 @@ public class BookServices {
 		String newPage = "book_form.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(newPage);
 		requestDispatcher.forward(request, response);
-		
+
 	}
 
-	public void editBook() {
-		
-		
-	}
+	public void createBook() throws ServletException, IOException {
+		String title = request.getParameter("title");
 
+		Book existBook = bookDAO.findByBookTitle(title);
+		if (existBook != null) {
+			String message = "Could not create book. A book with title: " + title + " already exists";
+			request.setAttribute("message", message);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
+			requestDispatcher.forward(request, response);
+		}
+
+		Book newBook = new Book();
+		readBookDetails(newBook);
+		
+		Book createdBook = bookDAO.create(newBook);
+
+		if (createdBook.getBookId() > 0) {
+			String message = "A new book has been created successfully";
+			request.setAttribute("message", message);
+			listBook();
+		}
+
+	}
 	
-//	public void editCategory() throws ServletException, IOException {
-//	int categoryId = Integer.parseInt(request.getParameter("id"));
-//	
-//	Category category = bookDAO.get(categoryId);
-//	String editPage = "category_form.jsp";
-//	String categoryName = category.getName();
-//	categoryName = categoryName.replace(" ", "&nbsp;");
-//	request.setAttribute("categoryName", categoryName);
-//	request.setAttribute("category", category);
-//	RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
-//	
-//	requestDispatcher.forward(request, response);
-//	
-//}	
-//	public void createCategory() throws ServletException, IOException {
-//		
-//		String categoryName = request.getParameter("categoryName");
-//		Category existCategory = bookDAO.findByCategoryName(categoryName);
-//
-//		if (existCategory != null) {
-//			String message = "Could not create category. A category with name: " + categoryName + " already exists";
-//			request.setAttribute("message", message);
-//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
-//			requestDispatcher.forward(request, response);
-//
-//		} else {
-//			Category category = new Category(categoryName);
-//			bookDAO.create(category);
-//			listCategory("A new category created successfully");
-//		}
-//	}
-//	
+	public Book readBookDetails(Book book) throws ServletException, IOException {
 
-//
-//	public void updateCategory() throws ServletException, IOException {
-//		
-//		int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-//		String categoryName = request.getParameter("categoryName");
-//		
-//		Category categoryById = bookDAO.get(categoryId);
-//		Category categoryByName = bookDAO.findByCategoryName(categoryName);
-//		
-//		if(categoryByName != null && categoryById.getCategoryId() != categoryByName.getCategoryId()) {
-//			String message = "Could not update category. Category with name "+ categoryByName.getName() + " already exists.";
-//			request.setAttribute("message", message);
-//			
-//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
-//			requestDispatcher.forward(request,response);
-//		}
-//		else {
-//			categoryById.setName(categoryName);
-//			bookDAO.update(categoryById);
-//			String message = "Category has been updated successfully";
-//			listCategory(message);
-//		}
-//		
-//	}
-//
-//	public void deleteCategory() throws ServletException, IOException {
-//		int categoryId = Integer.parseInt(request.getParameter("id"));
-//		bookDAO.delete(categoryId);
-//		
-//		String message = "Category has been deleted successfully";
-//		listCategory(message);
-//	}
+		Integer categoryId = Integer.parseInt(request.getParameter("category"));
+		
+		String title = request.getParameter("title");
+		String author = request.getParameter("author");
+		String isbn = request.getParameter("isbn");
+		float price = Float.parseFloat(request.getParameter("price"));
+		String description = request.getParameter("description");
+
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+		Date publishDate = null;
+
+		try {
+			publishDate = dateFormat.parse(request.getParameter("publishDate"));
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+			throw new ServletException("Error parsing publish date (format is MM/dd/yyyy)");
+		}
+
+		
+		book.setTitle(title);
+		book.setAuthor(author);
+		book.setDescription(description);
+		book.setIsbn(isbn);
+		book.setPrice(price);
+		book.setPublishDate(publishDate);
+
+		Category category = categoryDAO.get(categoryId);
+		book.setCategory(category);
+
+		Part part = request.getPart("bookImage");
+
+		if (part != null && part.getSize() > 0) {
+			long size = part.getSize();
+			byte[] imageBytes = new byte[(int) size];
+
+			InputStream inputStream = part.getInputStream();
+			inputStream.read(imageBytes);
+			inputStream.close();
+
+			book.setImage(imageBytes);
+		}
+		
+		return book;
+
+	}
+	
+	
+
+	public void editBook() throws ServletException, IOException {
+		int bookId = Integer.parseInt(request.getParameter("id"));
+		
+		Book existBook = bookDAO.get(bookId);
+		List<Category> listCategory = categoryDAO.listAll();
+		
+		request.setAttribute("book", existBook);
+		request.setAttribute("listCategory", listCategory);
+		
+		
+		String title = existBook.getTitle();
+		title = title.replace(" ", "&nbsp;");
+		request.setAttribute("title", title);
+		
+		
+		String author = existBook.getAuthor();
+		author = author.replace(" ", "&nbsp;");
+		request.setAttribute("author", author);
+		
+		String description = existBook.getDescription();
+		description = description.replace(" ", "&nbsp;");
+		request.setAttribute("description", description);
+				
+		
+		String newPage = "book_form.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(newPage);
+		requestDispatcher.forward(request, response);
+	}
+
+	public void updateBook() throws ServletException, IOException {
+		int bookId = Integer.parseInt(request.getParameter("bookId"));
+		
+		String title = request.getParameter("title");
+		
+		Book existBook = bookDAO.get(bookId);
+		
+		Book bookByTitle = bookDAO.findByBookTitle(title);
+		
+		if (bookByTitle != null && !existBook.equals(bookByTitle)) {
+			String message = "Could not update book because there's another book having same 										title.";
+			listBook(message);
+			return;
+		}
+		
+		Book updatedBook = readBookDetails(existBook);
+		
+		bookDAO.update(updatedBook);
+		
+		String message = "The book has been updated successfully";
+		
+		listBook(message);
+	}
+
+	public void deleteBook() throws ServletException, IOException {
+		int bookId = Integer.parseInt(request.getParameter("id"));
+		bookDAO.delete(bookId);
+		
+		String message = "Book has been deleted successfully";
+		listBook(message);
+	}
+
+
+
 
 }

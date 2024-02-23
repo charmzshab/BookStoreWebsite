@@ -72,7 +72,6 @@ public class CategoryServices {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
 		
 		requestDispatcher.forward(request, response);
-		
 	}
 
 	public void updateCategory() throws ServletException, IOException {

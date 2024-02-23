@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -47,8 +48,8 @@
 					<td>${book.title}</td>
 					<td>${book.author}</td>
 					<td>${book.category.name}</td>
-					<td>${book.price}</td>
-					<td>${book.lastUpdateTime}</td>
+					<td>$${book.price}</td>
+					<td><fmt:formatDate pattern='MM/dd/yyyy' value='${book.lastUpdateTime }' /></td>
 					<td><a href="edit_book?id=${book.bookId}">Edit</a>
 						&nbsp; <a href="javascript:confirmDelete(${book.bookId})">Delete</a></td>
 				</tr>
