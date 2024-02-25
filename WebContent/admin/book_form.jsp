@@ -7,6 +7,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Create New Book - Evergreen Bookstore Administration</title>
+<link rel="stylesheet" href="../css/style.css" >
 <link href="../css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
 
@@ -43,17 +44,18 @@
 			<tbody>
 				<tr>
 					<td align="right">Category:</td>
-					<td><select name="category">
-							<c:forEach items="${listCategory}" var="category">
-								<c:if test="${category.categoryId eq book.category.categoryId}">
-									<option value="${category.categoryId}" selected>
-								</c:if>
-								<c:if test="${category.categoryId ne book.category.categoryId}">
-									<option value="${category.categoryId}">
-								</c:if>
+					<td>
+					<select name="category">
+						<c:forEach items="${listCategory}" var="category">
+							<c:if test="${category.categoryId eq book.category.categoryId}">
+								<option value="${category.categoryId}" selected>
+							</c:if>
+							<c:if test="${category.categoryId ne book.category.categoryId}">
+								<option value="${category.categoryId}">
+							</c:if>							
 								${category.name}
-								</option>
-							</c:forEach>
+							</option>
+						</c:forEach>
 					</select></td>
 				</tr>
 				<tr>
@@ -98,9 +100,8 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center"><input type="submit"
-						value="Save:"> <input type="button" value="Cancel"
-						onClick="javascript:history.go(-1);"></td>
+					<td colspan="2" align="center"><button type="submit">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" onClick="javascript:history.go(-1);">Cancel</button></td>
 				</tr>
 			</tbody>
 		</table>
@@ -120,7 +121,6 @@
 
 
 		$('#publishDate').datepicker();
-		//$('#bookImage').attr('value') = "selected";
 		$('#bookImage').change(function() {
 			showImageThumbnail(this);
 		});
@@ -131,7 +131,7 @@
 				author : "required",
 				isbn : "required",
 				publishDate : "required",
-				bookImage : "required",
+				//bookImage : "required",
 				price : "required",
 				description : "required"
 			},
@@ -142,7 +142,7 @@
 				author : "Please enter author's name",
 				isbn : "Please enter isbn number",
 				publishDate : "Please enter publish date",
-				bookImage : "Please choose the book image",
+				//bookImage : "Please choose the book image",
 				price : "Please enter the book price",
 				description : "Please enter book description"
 			}
@@ -157,13 +157,10 @@
 	function showImageThumbnail(fileInput) {
 		let file = fileInput.files[0];
 
-		console.log(file);
-
 		let reader = new FileReader();
 
 		reader.onload = function(e) {
 			$('#thumbnail').attr('src', e.target.result);
-			console.log(e.target.result);
 		};
 
 		reader.readAsDataURL(file);

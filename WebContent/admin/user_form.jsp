@@ -9,23 +9,25 @@
 
 <meta charset="ISO-8859-1">
 <title>Create New User - Evergreen Bookstore Administration</title>
+<link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
 
 
 	<diV align="center">
-		<h2>
+		<h1 class="pageheading">
 			<c:if test="${user != null}">
 			Edit User
 			</c:if>
 			<c:if test="${user == null}">
 			Create New User
 			</c:if>
-		</h2>
-	</diV>
+		</h1>
+	</div>
 
-	<diV align="center">
+	<div align="center">
+
 		<c:if test="${user != null}">
 			<form id="userForm" action="update_user" method="post"">
 				<input type="hidden" name="userId" value=${user.userId}>
@@ -54,17 +56,39 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center"><input type="submit"
-						value="Save:"> <input type="button" value="Cancel"
-						onClick="javascript:history.go(-1);"></td>
+					<td colspan="2" align="center"><button type="submit">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" id="buttonCancel">Cancel</button></td>
+				</tr>
 			</tbody>
 		</table>
 		</form>
 	</diV>
+
 	<jsp:directive.include file="footer.jsp" />
 </body>
 
 <script type="text/javascript">
+	$(document).ready(function() {
+		$("#userForm").validate({
+			rules : {
+				mail : "required",
+				fullname : "required",
+				password : "required",
+			},
+
+			messages : {
+				mail : "Please enter email address",
+				fullname : "Please enter full name",
+				password : "Please enter password"
+			}
+		});
+
+		$("#buttonCancel").click(function() {
+			history.go(-1);
+		});
+
+	});
+
 	function validateFormInput() {
 		const emailField = document.getElementById("email");
 		const fullNameField = document.getElementById("name");
@@ -89,32 +113,5 @@
 		}
 	}
 </script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#userForm").validate({
-			rules : {
-				mail : {
-					required : true,
-					mail : true
-				},
-				fullname : "required",
-				password : "required",
-			},
 
-			messages : {
-				mail : {
-					required : "Please enter email",
-					mail : "Please enter a valid email address"
-				},
-				fullname : "Please enter full name",
-				password : "Please enter password"
-			}
-		});
-
-		$("#buttonCancel").click(function() {
-			history.go(-1);
-		});
-
-	});
-</script>
 </html>

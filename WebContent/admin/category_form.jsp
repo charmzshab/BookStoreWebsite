@@ -6,6 +6,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Create New Category - Evergreen Bookstore Administration</title>
+<link rel="stylesheet" href="../css/style.css" >
+<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
@@ -24,31 +27,27 @@
 
 	<diV align="center">
 		<c:if test="${category != null}">
-			<form id="form-1" action="update_category" method="post"
-				onsubmit="return validateFormInput() ">
-				<input type="hidden" name="categoryId" value=${category.categoryId}>
+			<form id="categoryForm" action="update_category" method="post">
+				<input type="hidden" name="categoryId" value=${category.categoryId} />
 		</c:if>
 		<c:if test="${category == null}">
-			<form id="form-1" action="create_category" method="post"
-				onsubmit="return validateFormInput() ">
+			<form id="categoryForm" action="create_category" method="post">
 		</c:if>
-		<form id="form-1" action="create_category" method="post"
-			onsubmit="return validateFormInput() ">
-			<table id="table-1">
+		
+			<table class="form">
 				<tbody>
 					<tr>
 						<td align="right">Name:</td>
 						<td><input type="text" name="categoryName" id="category"
-							size="20" value=${categoryName}></td>
+							size="20" value=${categoryName} ></td>
 					</tr>
 					<tr>
 					<tr>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
-						<td colspan="2" align="center"><input type="submit"
-							value="Save:"> <input type="button" value="Cancel"
-							onClick="javascript:history.go(-1);"></td>
+						<td colspan="2" align="center"><button type="submit">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" onClick="javascript:history.go(-1);">Cancel</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -57,6 +56,22 @@
 	<jsp:directive.include file="footer.jsp" />
 </body>
 <script type="text/javascript">
+
+$(document).ready(function() {
+	$("#categoryForm").validate({
+		rules : {
+			categoryName : "required"
+		},
+		messages : {
+			categoryName : "Please enter category name"		}
+	});
+
+	$("#buttonCancel").click(function() {
+		history.go(-1);
+	});
+
+});
+
 	
 	function validateFormInput() {
 		const categoryField = document.getElementById("category");
@@ -66,7 +81,6 @@
 			categoryField.focus();
 			return false;
 		}
-
 	}
 </script>
 </html>

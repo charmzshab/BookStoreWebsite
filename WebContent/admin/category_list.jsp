@@ -7,6 +7,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Manage Categories - Evergreen Bookstore Administration</title>
+<link rel="stylesheet" href="../css/style.css" >
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
@@ -18,7 +19,7 @@
 	</diV>
 	<c:if test="${message != null}">
 		<div align="center">
-			<h4>
+			<h4 class="message">
 				<i>${message}</i>
 			</h4>
 		</div>
