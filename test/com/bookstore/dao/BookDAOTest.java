@@ -146,5 +146,14 @@ class BookDAOTest extends BaseDAOTest {
 
 		assertEquals(expected, totalBooks);
 	}
+	
+	@Test
+	public void testListByCategory() {
+		
+		int  categoryId = 20;
+		List<Book> listBooks = bookDAO.listBooksByCategory(categoryId);
+		
+		assertTrue(listBooks.size() > 0);
+	}
 
 }
