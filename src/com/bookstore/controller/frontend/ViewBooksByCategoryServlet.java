@@ -1,6 +1,8 @@
 package com.bookstore.controller.frontend;
 
 import com.bookstore.controller.BaseServlet;
+import com.bookstore.service.BookServices;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +20,8 @@ public class ViewBooksByCategoryServlet extends BaseServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		BookServices bookServices = new BookServices( entityManager, request, response);
+		bookServices.listBookByCategory();
 	}
 
 }
