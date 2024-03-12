@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
@@ -70,8 +71,13 @@ public class BookDAO extends JpaDAO<Book> implements GenericDAO<Book> {
 		return null;
 	}
 	
-	public List<Book> listRecentlyAdded(){
-		return null;
+	public List<Book> listNewBooks(){
+		
+		Query query = entityManager.createNamedQuery("Book.listNew");
+		query.setFirstResult(0);
+		query.setMaxResults(4);
+		
+		return query.getResultList();
 	}
 
 }

@@ -32,7 +32,7 @@
 			<b>${book.title}</b>
 			</a>
 			</div>
-			
+			<div> Rating *****</div>
 			<div> 
             </div>
 			<div> <i>by  ${book.author}</i></div>
