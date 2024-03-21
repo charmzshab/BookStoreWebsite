@@ -22,6 +22,8 @@
 			<tr>
 				<td rowspan="2"><img class="book-large"
 					src="data:image/jpg;base64,${book.base64Image}" /></td>
+					<td valign="top" align="left">Rating *****</td>
+					
 				<td valign="top" align="left"><a href="#reviews">${fn:length(book.reviews)}
 						Reviews</a></td>
 				<td valign="top" rowspan="2" width="20%">
