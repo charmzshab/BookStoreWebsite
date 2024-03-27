@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -241,7 +242,20 @@ public class BookServices {
 		requestDispatcher.forward(request, response);
 	}
 
-
-
-
+	public void search()  throws ServletException, IOException {
+		String keyword = request.getParameter("keyword");
+		
+		List<Book> result = null;
+		if(keyword =="") {
+			result = bookDAO.listAll();
+		}
+		else {
+			result = bookDAO.search(keyword);
+		}
+		request.setAttribute("keyword",keyword);
+		request.setAttribute("result",result);
+		String destPage = "frontend/search_result.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
+		requestDispatcher.forward(request, response);
+	}
 }

@@ -166,5 +166,29 @@ class BookDAOTest extends BaseDAOTest {
 		
 		assertEquals(4,listBooks.size());
 	}
+	
+	@Test
+	public void testSearchBookInTitle() {
+		String keyword = "Java";
+		List<Book> searchResult = bookDAO.search(keyword);
+		
+		assertEquals(6,searchResult.size());
+	}
+	
+	@Test
+	public void testSearchBookInAuthor() {
+		String authorName = "Joshua";
+		List<Book> searchResult = bookDAO.search(authorName);
+		
+		assertTrue(searchResult.size() > 0);
+	}
+	
+	@Test
+	public void testSearchBookInDescription() {
+		String description = "programming";
+		List<Book> searchResult = bookDAO.search(description);
+		
+		assertTrue(searchResult.size() > 1);
+	}
 
 }
