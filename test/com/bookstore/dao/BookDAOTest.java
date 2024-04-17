@@ -23,20 +23,20 @@ import org.junit.jupiter.api.Test;
 import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
 
-class BookDAOTest extends BaseDAOTest {
+class BookDAOTest{
 
 	private static BookDAO bookDAO;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		BaseDAOTest.setUpBeforeClass();
-		bookDAO = new BookDAO(entityManager);
+		bookDAO = new BookDAO();
 	}
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
-		// Close EntityManager
-		BaseDAOTest.tearDownAfterClass();
+		// Close EntityManagerFactory
+		bookDAO.close();
+		
 	}
 
 	@Test

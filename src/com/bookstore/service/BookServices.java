@@ -23,16 +23,16 @@ import com.bookstore.entity.Category;
 
 public class BookServices {
 
-	private EntityManager entityManager;
+	
 	private BookDAO bookDAO;
 	private CategoryDAO categoryDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	public BookServices(EntityManager entityManager, HttpServletRequest request, HttpServletResponse response) {
-		this.entityManager = entityManager;
-		bookDAO = new BookDAO(entityManager);
-		categoryDAO = new CategoryDAO(entityManager);
+	public BookServices( HttpServletRequest request, HttpServletResponse response) {
+		
+		bookDAO = new BookDAO();
+		categoryDAO = new CategoryDAO();
 		this.request = request;
 		this.response = response;
 	}
@@ -177,7 +177,7 @@ public class BookServices {
 		Book bookByTitle = bookDAO.findByBookTitle(title);
 		
 		if (bookByTitle != null && !existBook.equals(bookByTitle)) {
-			String message = "Could not update book because there's another book having same 										title.";
+			String message = "Could not update book because there's another book having same title.";
 			listBook(message);
 			return;
 		}
