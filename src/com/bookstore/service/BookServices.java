@@ -22,7 +22,6 @@ import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
 
 public class BookServices {
-
 	
 	private BookDAO bookDAO;
 	private CategoryDAO categoryDAO;
@@ -135,8 +134,6 @@ public class BookServices {
 		return book;
 
 	}
-	
-	
 
 	public void editBook() throws ServletException, IOException {
 		int bookId = Integer.parseInt(request.getParameter("id"));
@@ -202,7 +199,6 @@ public class BookServices {
 	public void listBookByCategory() throws ServletException, IOException {
 		int categoryId = Integer.parseInt(request.getParameter("id"));
 		Category category = categoryDAO.get(categoryId);
-		List<Category> listCategory = categoryDAO.listAll();
 		List<Book> listBooks = bookDAO.listBooksByCategory(categoryId);
 		if (category == null) {
 			String message = "Sorry, the category ID " + categoryId + " is not available.";
@@ -212,25 +208,20 @@ public class BookServices {
 		}
 	
 		request.setAttribute("category", category);
-		request.setAttribute("listCategory", listCategory);
 		request.setAttribute("listBooks", listBooks);
 		
 		String listPage = "frontend/books_list_by_category.jsp";
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
 		requestDispatcher.forward(request, response);
-		
 	}
 
 	public void viewBookDetail() throws ServletException, IOException {
 		Integer bookId = Integer.parseInt(request.getParameter("id"));
 		Book book = bookDAO.get(bookId);
-		List<Category> listCategory = categoryDAO.listAll();
-		
 		String destPage = "frontend/book_detail.jsp";
 		if (book != null) {
 			request.setAttribute("book", book);
-			request.setAttribute("listCategory", listCategory);
 
 		} else {
 			destPage = "frontend/message.jsp";
