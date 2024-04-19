@@ -3,9 +3,6 @@ package com.bookstore.service;
 import java.io.IOException;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -112,7 +109,20 @@ public class UserServices {
 		
 		String message = "User has been deleted successfully";
 		listUser(message);
-		
-		
+	}
+	
+	public void login() throws ServletException, IOException {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		boolean loginResult = userDAO.checkLogin(email, password);
+		if (loginResult) {
+			request.getSession().setAttribute("useremail", email);
+			request.getRequestDispatcher("/admin/").forward(request, response);
+		} else {
+			String message = "Login failed";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+		}
+
 	}
 }
