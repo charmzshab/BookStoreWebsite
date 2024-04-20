@@ -42,6 +42,14 @@ class UserDAOTest  {
 
 		assertTrue(user1.getUserId() > 0);
 	}
+	
+	@Test
+	public void checkAdminLogin() {
+		String email = "shabix@amigos.net";
+		String password = "mySecret";
+		boolean loginResult = userDAO.checkLogin(email, password);
+		assertTrue(loginResult);
+	}
 
 	@Test
 	public void testCreateUserFieldsNotSet() {
