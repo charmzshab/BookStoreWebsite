@@ -44,7 +44,7 @@ class UserDAOTest  {
 	}
 	
 	@Test
-	public void checkAdminLogin() {
+	public void testCheckAdminLogin() {
 		String email = "shabix@amigos.net";
 		String password = "mySecret";
 		boolean loginResult = userDAO.checkLogin(email, password);
