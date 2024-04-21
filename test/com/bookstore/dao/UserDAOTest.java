@@ -3,141 +3,128 @@ package com.bookstore.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.bookstore.entity.Users;
 
-class UserDAOTest  {
+public class UserDAOTest {
+
 	private static UserDAO userDAO;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	@BeforeClass
+	public static void setupClass() throws Exception {
 		userDAO = new UserDAO();
-	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-		userDAO.close();
 	}
 
 	@Test
-	void testCreateUsers() {
-
+	public void testCreateUsers() {
 		Users user1 = new Users();
-		user1.setEmail("havertz@gmail.com");
-		user1.setFullName("Franz Havertz");
-		user1.setPassword("amigoscode");
-
+		user1.setEmail("john@gmail.com");
+		user1.setFullName("John Smith");
+		user1.setPassword("asdk!88)99");
 		user1 = userDAO.create(user1);
-
 		assertTrue(user1.getUserId() > 0);
+
 	}
-	
+
 	@Test
-	public void testCheckAdminLogin() {
-		String email = "shabix@amigos.net";
-		String password = "mySecret";
+	public void checkAdminLogin() {
+		String email = "vite@mail.ru";
+		String password = "asda";
 		boolean loginResult = userDAO.checkLogin(email, password);
 		assertTrue(loginResult);
 	}
 
-	@Test
-	public void testCreateUserFieldsNotSet() {
+	@Test(expected = PersistenceException.class)
+	public void testCreateUsersFieldsNotSet() {
 		Users user1 = new Users();
-		user1.setEmail("jackie@gmail.com");
-		user1.setFullName("JAckie Chan");
-		// user1.setPassword("shabix20024"); error is thrown because password is
-		// required
+		user1 = userDAO.create(user1);
 
-		Assertions.assertThrows(PersistenceException.class, () -> {
-			userDAO.create(user1);
-		});
 	}
 
 	@Test
-	public void testUpdateUsers() {
+	public void testUpdateUser() {
 		Users user = new Users();
 		user.setUserId(1);
-		user.setEmail("shabix@amigos.net");
-		user.setFullName("Shabix Lampard");
-		user.setPassword("mySecret");
-
+		user.setEmail("my@email.net");
+		user.setFullName("Vitalie");
+		user.setPassword("abracadabra");
 		user = userDAO.update(user);
-		String expected = "mySecret";
-		String result = user.getPassword();
-
-		assertEquals(expected, result);
+		String exepected = "abracadabra";
+		// String actual = "helloworld";
+		assertEquals(exepected, user.getPassword());
 
 	}
 
 	@Test
 	public void testGetUsersFound() {
-		Integer userId = 19;
-		Users user = userDAO.get(userId);
+		Integer userID = 1;
+		Users user = userDAO.get(userID);
+		if (user != null) {
+			System.out.println(user.getEmail());
+		}
 		assertNotNull(user);
-
 	}
 
 	@Test
-	public void testUsersNotFound() {
-		Integer userId = 1;
-		Users user = userDAO.get(userId);
-
+	public void testGetUserNotFound() {
+		Integer userID = 100;
+		Users user = userDAO.get(userID);
 		assertNull(user);
 	}
 
 	@Test
-	public void testDeleteUsers() {
-		Integer userId = 19;
-		userDAO.delete(userId);
-
-		Users user = userDAO.get(userId);
-
+	public void testDeleteUser() {
+		Integer userID = 5;
+		userDAO.delete(userID);
+		Users user = userDAO.get(userID);
 		assertNull(user);
 
 	}
 
-	@Test
-	public void testDeleteNonExistUser() {
-		Integer userId = 19;
+	@Test(expected = Exception.class)
+	public void testeDeleteNonExistUser() {
+		Integer userID = 57;
+		userDAO.delete(userID);
 
-		assertThrows(Exception.class, () -> {
-			userDAO.delete(userId);
-		});
 	}
 
 	@Test
-	public void testListAllUsers() {
+	public void testListAll() {
+		List<Users> listUsers = userDAO.listAll();
+		for (Users users : listUsers) {
+			System.out.println(users.getEmail());
+		}
+		assertTrue(listUsers.size() > 0);
 
-		List<Users> users = userDAO.listAll();
-
-		assertTrue(users.size() > 0);
 	}
 
 	@Test
 	public void testCount() {
-		long totalUsers = userDAO.count();
-		long expected = 4;
+		long count = userDAO.count();
+		assertEquals(7, count);
 
-		assertEquals(expected, totalUsers);
 	}
 
 	@Test
 	public void testFindByEmail() {
-		String email = "drogba@chelsea.net";
+		String email = "maria@mail.ru";
 		Users user = userDAO.findByEmail(email);
-
 		assertNotNull(user);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+
 	}
 
 }

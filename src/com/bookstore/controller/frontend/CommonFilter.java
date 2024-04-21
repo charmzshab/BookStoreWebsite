@@ -10,52 +10,40 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpFilter;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bookstore.dao.CategoryDAO;
 import com.bookstore.entity.Category;
 
-
 @WebFilter("/*")
-public class CommonFilter extends HttpFilter implements Filter {
+public class CommonFilter implements Filter {
 
-	private static final long serialVersionUID = 1L;
-	
-	private CategoryDAO categoryDAO;
-       
+	private final CategoryDAO categoryDAO;
 
-    public CommonFilter() {
-    	categoryDAO = new CategoryDAO();
-    }
+	public CommonFilter() {
+		categoryDAO = new CategoryDAO();
 
+	}
 
 	public void destroy() {
-		
 	}
 
-
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
-		HttpServletRequest httpRequest = (HttpServletRequest)request;
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		
-		if(!path.startsWith("/admin")) {
+		if (!path.startsWith("/admin/")) {
 			List<Category> listCategory = categoryDAO.listAll();
 			request.setAttribute("listCategory", listCategory);
-			
-		    System.out.print("CommonFilter->doFilter");
 		}
-		
-		
-	
-		
+		System.out.println("CommonFilter->doFt");
 		chain.doFilter(request, response);
+
 	}
 
-
 	public void init(FilterConfig fConfig) throws ServletException {
-		
 	}
 
 }

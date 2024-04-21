@@ -8,20 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bookstore.service.CategoryServices;
+import com.bookstore.service.CategoryService;
 
 @WebServlet("/admin/create_category")
 public class CreateCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-  
-    public CreateCategoryServlet() {
-        super();
-    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CategoryServices categoryServices = new CategoryServices(request,response);
-		categoryServices.createCategory();
+	public CreateCategoryServlet() {
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		CategoryService categoryService = new CategoryService( request, response);
+		categoryService.createCategory();
 	}
 
 }

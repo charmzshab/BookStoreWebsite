@@ -2,11 +2,15 @@ package com.bookstore.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
+
 import com.bookstore.entity.Category;
 
 public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category> {
 
 	public CategoryDAO() {
+
 	}
 
 	@Override
@@ -15,22 +19,20 @@ public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category
 	}
 
 	@Override
-	public Category update(Category category) {
-		return super.update(category);
+	public Category update(Category c) {
+		return super.update(c);
 	}
 
 	@Override
-	public Category get(Object categoryId) {
-		return super.find(Category.class, categoryId);
+	public Category get(Object id) {
+		return super.find(Category.class, id);
 	}
-
-	
 
 	@Override
-	public void delete(Object categoryId) {
-		super.delete(Category.class, categoryId);
-	}
+	public void delete(Object id) {
+		super.delete(Category.class, id);
 
+	}
 	@Override
 	public List<Category> listAll() {
 		return super.findWithNamedQuery("Category.findAll");
@@ -41,15 +43,13 @@ public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category
 		return super.countWithNamedQuery("Category.countAll");
 	}
 
-		
-	public Category findByCategoryName(String categoryName) {
-		List<Category> listCategory = super.findWithNamedQuery("Category.findByName", "name", categoryName);
-		
-		if (listCategory != null && listCategory.size() > 0) {
-			return listCategory.get(0);
+	public Category findByName(String nameCategory) {
+		List<Category> list = super.findWithNamedQuery("Category.findByName", "name", nameCategory);
+		if (list != null && list.size() > 0) {
+			return list.get(0);
 		}
-
 		return null;
 	}
+
 	
 }

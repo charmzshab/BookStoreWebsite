@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.bookstore.service.UserServices;
 
 @WebServlet("/admin/delete_user")
@@ -20,11 +21,9 @@ public class DeleteUserServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		UserServices userService = new UserServices(request, response);
-		userService.deleteUser();
-		
-	}
+		UserServices services = new UserServices( request, response);
+		services.deleteUser();
 
+	}
 
 }
