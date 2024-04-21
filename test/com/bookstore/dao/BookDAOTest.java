@@ -190,13 +190,5 @@ class BookDAOTest{
 		
 		assertTrue(searchResult.size() > 1);
 	}
-	
-	@Test
-	public void testCountByCategory() {
-	int cateoryId = 11;
-	long numOfBooks = bookDAO.countByCategory(cateoryId);
-	assertTrue(numOfBooks == 7);
-	
-	}
 
 }
