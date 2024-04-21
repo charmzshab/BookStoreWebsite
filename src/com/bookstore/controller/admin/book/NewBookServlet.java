@@ -8,23 +8,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bookstore.service.BookService;
+import com.bookstore.service.BookServices;
 
-/**
- * Servlet implementation class NewBookServlet
- */
 @WebServlet("/admin/new_book")
-public class NewBookServlet extends HttpServlet  {
+public class NewBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public NewBookServlet() {
-		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		BookService bookService = new BookService( request, response);
-		bookService.showBookNewForm();
+		BookServices bookServices = new BookServices(request, response);
+		bookServices.showBookNewForm();
 	}
 
 }

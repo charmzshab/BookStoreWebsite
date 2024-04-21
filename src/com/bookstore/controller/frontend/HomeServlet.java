@@ -11,34 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bookstore.dao.BookDAO;
-import com.bookstore.dao.CategoryDAO;
 import com.bookstore.entity.Book;
-import com.bookstore.entity.Category;
 
 @WebServlet("")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    public HomeServlet() {
+        super();
+    }
 
-	public HomeServlet() {
-		super();
-
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		BookDAO bookDAO = new BookDAO();
-		List<Book> listNewBooks = bookDAO.listNewBook();
-		//List<Book> listBestSellingBooks = bookDAO.listBestSellingBook();
+		
+		List<Book> listNewBooks = bookDAO.listNewBooks();
 		
 		request.setAttribute("listNewBooks", listNewBooks);
-		//request.setAttribute("listBestSellingBooks", listBestSellingBooks);
 		
-		List<Book> listFavoredBooks = bookDAO.listMostFavoredBooks();
-		request.setAttribute( "listFavoredBooks",listFavoredBooks );
-		String homePage = "frontend/index.jsp";
-		RequestDispatcher dispatcher = request.getRequestDispatcher(homePage);
+		String page = "frontend/index.jsp";
+		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 		dispatcher.forward(request, response);
-
 	}
-
 }

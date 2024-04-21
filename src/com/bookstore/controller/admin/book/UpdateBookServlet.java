@@ -9,17 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bookstore.service.BookService;
+import com.bookstore.service.BookServices;
 
-
- @WebServlet("/admin/update_book")
+@WebServlet("/admin/update_book")
 @MultipartConfig(
-		fileSizeThreshold = 1024 * 1024,
-		maxFileSize= 1024 *  300,
-		maxRequestSize =  1024 * 1024
-		
-		
-		)
+		fileSizeThreshold = 1024 * 10, //10 KB
+		maxFileSize = 1024 * 300, // 300 KB
+		maxRequestSize = 1024 * 1024 // 1 MB
+			)
 public class UpdateBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -28,8 +25,8 @@ public class UpdateBookServlet extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BookService bookService = new BookService(request, response);
-		bookService.updateBook();
+		BookServices bookServices = new BookServices(request, response);
+		bookServices.updateBook();
 	}
 
 }

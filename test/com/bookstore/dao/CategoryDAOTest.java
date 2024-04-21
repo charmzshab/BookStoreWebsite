@@ -1,79 +1,101 @@
 package com.bookstore.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.bookstore.entity.Category;
 import com.bookstore.entity.Users;
 
-public class CategoryDAOTest {
+class CategoryDAOTest{
+	private static CategoryDAO categoryDAO;
 
-	private static CategoryDAO categoryDao;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		categoryDao = new CategoryDAO();
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		categoryDAO = new CategoryDAO();
 	}
 
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		categoryDao.close();
-	}
-
-	@Test
-	public void testCreateCategory() {
-		Category newCat = new Category("Serevb Ten");
-		Category newCategory = categoryDao.create(newCat);
-		assertTrue(newCategory != null && newCategory.getCategoryId() > 0);
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+		// Close EntityManagerFacto
+		categoryDAO.close();
 	}
 
 	@Test
-	public void testUpdateCategory() {
-		Category c = new Category("---------vlad");
-		c.setCategoryId(24);
-		Category updateCategory = categoryDao.update(c);
-		assertEquals(c.getName(), updateCategory.getName());
+	void testCreateCategory() {
+		Category newCat = new Category("Javascript");
+		Category category = categoryDAO.create(newCat);
+
+		assertTrue(category.getCategoryId() > 0);
 	}
 
 	@Test
-	public void testGetCategory() {
-		Integer userID = 16;
-		Category category = categoryDao.get(userID);
+	void testUpdateCategory() {
+		Category newCat = new Category("Core Java");
+		newCat.setCategoryId(11);
+
+		Category category = categoryDAO.update(newCat);
+
+		assertEquals(newCat.getName(), category.getName());
+
+	}
+
+	@Test
+	void testGet() {
+		Integer catId = 13;
+		Category category = categoryDAO.get(catId);
+		
 		assertNotNull(category);
-
 	}
 
 	@Test
-	public void testListAll() {
-		List<Category> listCategory = categoryDao.listAll();
-		listCategory.forEach(c -> System.out.println(c.getName()));
-		assertTrue(listCategory.size() > 0);
+	void testDeleteObject() {
+		Integer catId = 13;
+		
+		categoryDAO.delete(catId);
 
+		Category category = categoryDAO.get(catId);
+
+		assertNull(category);
+
+		
 	}
 
 	@Test
-	public void testCountCategory() {
-		long count = categoryDao.count();
-		assertEquals(18, count);
-
+	void testListAll() {
+		List<Category> categories = categoryDAO.listAll();
+		
+		categories.forEach(cat -> System.out.println(cat.getName()));
+		
+		assertTrue(categories.size() > 0);
 	}
 
 	@Test
-	public void testDeleteCategory() {
-		Integer categoryID = 9;
-		categoryDao.delete(categoryID);
-		Category category = categoryDao.get(categoryID);
-		assertFalse(category != null);
+	void testCount() {
+		long totalCategories = categoryDAO.count();
+		long expected = 2;
+		
+		assertEquals(expected,totalCategories);
+		
+	}
+	
 
+	@Test
+	void testFindByName() {
+		String name = "Javascript";
+		Category category = categoryDAO.findByCategoryName(name);
+		
+		assertNotNull(category);
+		
 	}
 
 }

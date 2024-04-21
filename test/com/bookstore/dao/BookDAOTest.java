@@ -1,11 +1,11 @@
 package com.bookstore.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,153 +15,188 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
 
-public class BookDAOTest {
-	private static BookDAO bookDao;
+class BookDAOTest{
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		bookDao = new BookDAO();
+	private static BookDAO bookDAO;
+
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		bookDAO = new BookDAO();
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		bookDao.close();
-
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+		// Close EntityManagerFactory
+		bookDAO.close();
+		
 	}
 
 	@Test
-	public void testUpdateBook() throws ParseException, IOException {
+	public void testCreate() throws ParseException, IOException {
 		Book existBook = new Book();
-		existBook.setBookId(1);
 
-		Category category = new Category("Java Core");
-		category.setCategoryId(1);
+		Category newCat = new Category("Java Core");
+		newCat.setCategoryId(21);
+		existBook.setCategory(newCat);
 
-		existBook.setCategory(category);
-
-		existBook.setTitle("Effective Java (3th Edition)");
+		existBook.setTitle("Effective Java (3rd Edition)");
 		existBook.setAuthor("Joshua Bloch");
-		existBook.setDescription("New coverage of generics, enums, annotations.");
-		existBook.setPrice(40F);
+		existBook.setDescription(
+				"Are you looking for a deeper understanding of the Java™ programming language so that you can write code that is clearer, more correct, more robust, and more reusable?");
 		existBook.setIsbn("0321356683");
+		existBook.setPrice(38.87f);
 
-		DateFormat dateFormater = new SimpleDateFormat("MM/dd/yyyy");
-		Date publishDate = dateFormater.parse("05/28/2008");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date publishDate = dateFormat.parse("05/28/2008");
+
 		existBook.setPublishDate(publishDate);
 
-		String imagePath = "D:\\DescarcarileMele\\dummy-data-books\\books\\Effective Java.jpg";
-		byte[] readedBytes = Files.readAllBytes(Paths.get(imagePath));
-
-		existBook.setImage(readedBytes);
-
-		Book updatedBook = bookDao.update(existBook);
-		assertEquals(existBook.getTitle(), "Effective Java (3th Edition)");
-
-	}
-
-	@Test
-	public void testCreateBook() throws ParseException, IOException {
-		Book newBook = new Book();
-
-		Category category = new Category("Advanced Java");
-		category.setCategoryId(1);
-
-		newBook.setCategory(category);
-
-		newBook.setTitle("Effective Java (2nd Edition)");
-		newBook.setAuthor("Joshua Bloch");
-		newBook.setDescription("New coverage of generics, enums, annotations.");
-		newBook.setPrice(38.37F);
-		newBook.setIsbn("0321356683");
-
-		DateFormat dateFormater = new SimpleDateFormat("MM/dd/yyyy");
-		Date publishDate = dateFormater.parse("05/28/2008");
-		newBook.setPublishDate(publishDate);
-
-		String imagePath = "D:\\DescarcarileMele\\dummy-data-books\\books\\Effective Java.jpg";
-		byte[] readedBytes = Files.readAllBytes(Paths.get(imagePath));
-
-		newBook.setImage(readedBytes);
-
-		Book createdBook = bookDao.create(newBook);
-		assertTrue(createdBook.getBookId() > 0);
-
-	}
-
-	@Test(expected = EntityNotFoundException.class)
-	public void testDeleteBookFail() {
-		Integer bookId = 100;
-		bookDao.delete(bookId);
-	}
-
-	@Test
-	public void testGetBookFail() {
-		Integer bookId = 99;
-		Book book = bookDao.get(bookId);
-
-		assertNull(book);
-	}
-
-	@Test
-	public void testListBook() {
-		List<Book> listAll = bookDao.listAll();
-
-		assertFalse(listAll.isEmpty());
-	}
-	
-	@Test
-	public void testCreate2ndBook() throws ParseException, IOException {
-		Book newBook = new Book();
-		
-		Category category = new Category("Java Core");
-		category.setCategoryId(1);
-		newBook.setCategory(category);
-		
-		newBook.setTitle("Java 8 in Action");
-		newBook.setAuthor("Alan Mycroft");
-		newBook.setDescription("Java 8 in Action is a clearly written guide to the new features of Java 8");
-		newBook.setPrice(36.72f);
-		newBook.setIsbn("1617291994");
-		
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");		
-		Date publishDate = dateFormat.parse("08/28/2014");
-		newBook.setPublishDate(publishDate);
-		
-		String imagePath = "D:\\BookStoreProject\\dummy-data\\books\\Java 8 in Action.JPG";
-		
+		String imagePath = "C:\\Users\\Hp\\Documents\\my_Servlet&Jsp_training\\E-Commerce BookStore Website\\Domain\\book\\books\\Effective Java.JPG";
 		byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+
+		existBook.setImage(imageBytes);
+
+		Book resultBook = bookDAO.create(existBook);
+
+//  	Assertions.assertThrows(PersistenceException.class, () -> {
+//  		bookDAO.create(newBook);
+//	});
+
+		assertTrue(resultBook.getBookId() > 0);
+
+	}
+
+	@Test
+	public void testUpdate() throws ParseException, IOException {
+		Book newBook = new Book();
+		newBook.setBookId(32);
+
+		Category newCat = new Category("Data Science");
+		newCat.setCategoryId(20);
+		newBook.setCategory(newCat);
+
+		newBook.setTitle("Effective Java (3rd Edition)");
+		newBook.setAuthor("Joshua Bloch");
+		newBook.setDescription(
+				"Are you looking for a deeper understanding of the Java™ programming language so that you can write code that is clearer, more correct, more robust, and more reusable?");
+		newBook.setIsbn("0321356683");
+		newBook.setPrice(40.87f);
+
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date publishDate = dateFormat.parse("05/28/2008");
+
+		newBook.setPublishDate(publishDate);
+
+		String imagePath = "C:\\Users\\Hp\\Documents\\my_Servlet&Jsp_training\\E-Commerce BookStore Website\\Domain\\book\\books\\Effective Java.JPG";
+		byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+
 		newBook.setImage(imageBytes);
-		
-		Book createdBook = bookDao.create(newBook);
-		
-		assertTrue(createdBook.getBookId() > 0);
+
+		Book resultBook = bookDAO.update(newBook);
+
+		assertEquals(resultBook.getTitle(), "Effective Java (3rd Edition)");
+
 	}
-	
+
 	@Test
-	public void testFindByTitleNotExist() {
-		String title = "Thinkin in Java";
-		Book book = bookDao.findByTitle(title);
-		
-		assertNull(book);
-	}
-	
-	@Test
-	public void testFindByTitleExist() {
-		String title = "Java 8 in Action";
-		Book book = bookDao.findByTitle(title);
-		
-		System.out.println(book.getAuthor());
-		System.out.println(book.getPrice());
-		
+	public void testGet() {
+		Integer bookId = 32;
+		Book book = bookDAO.get(bookId);
 		assertNotNull(book);
+	}
+	
+	
+	@Test
+	public void testFindByBookTitle() {
+		String bookTitle = "Effective Java (3rd Edition)";
+		Book book = bookDAO.findByBookTitle(bookTitle);
+		assertNotNull(book);
+	}
+
+	@Test
+	public void testDeleteBookFail() {
+		Integer bookId = 100; // book doesn't exist
+
+		Assertions.assertThrows(EntityNotFoundException.class, () -> {
+			bookDAO.delete(bookId);
+			;
+		});
+
+	}
+
+	@Test
+	public void testListAll() {
+		List<Book> books = bookDAO.listAll();
+
+		assertTrue(books.size() > 0);
+	}
+
+	@Test
+	public void testCount() {
+		long totalBooks = bookDAO.count();
+		long expected = 1;
+
+		assertEquals(expected, totalBooks);
+	}
+	
+	@Test
+	public void testListByCategory() {
 		
+		int  categoryId = 20;
+		List<Book> listBooks = bookDAO.listBooksByCategory(categoryId);
+		
+		assertTrue(listBooks.size() > 0);
+	}
+	
+	@Test
+	public void testListNewBooks() {
+		List<Book> listBooks = bookDAO.listNewBooks();
+		
+		for(Book aBook : listBooks) {
+			System.out.println(aBook.getTitle()+ "-" + aBook.getPublishDate());
+		}
+		
+		assertEquals(4,listBooks.size());
+	}
+	
+	@Test
+	public void testSearchBookInTitle() {
+		String keyword = "Java";
+		List<Book> searchResult = bookDAO.search(keyword);
+		
+		assertEquals(6,searchResult.size());
+	}
+	
+	@Test
+	public void testSearchBookInAuthor() {
+		String authorName = "Joshua";
+		List<Book> searchResult = bookDAO.search(authorName);
+		
+		assertTrue(searchResult.size() > 0);
+	}
+	
+	@Test
+	public void testSearchBookInDescription() {
+		String description = "programming";
+		List<Book> searchResult = bookDAO.search(description);
+		
+		assertTrue(searchResult.size() > 1);
+	}
+	
+	@Test
+	public void testCountByCategory() {
+	int cateoryId = 11;
+	long numOfBooks = bookDAO.countByCategory(cateoryId);
+	assertTrue(numOfBooks == 7);
+	
 	}
 
 }

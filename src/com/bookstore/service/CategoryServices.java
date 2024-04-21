@@ -45,7 +45,7 @@ public class CategoryServices {
 	public void createCategory() throws ServletException, IOException {
 		
 		String categoryName = request.getParameter("categoryName");
-		Category existCategory = categoryDAO.findByName(categoryName);
+		Category existCategory = categoryDAO.findByCategoryName(categoryName);
 
 		if (existCategory != null) {
 			String message = "Could not create category. A category with name: " + categoryName + " already exists";
@@ -80,7 +80,7 @@ public class CategoryServices {
 		String categoryName = request.getParameter("categoryName");
 		
 		Category categoryById = categoryDAO.get(categoryId);
-		Category categoryByName = categoryDAO.findByName(categoryName);
+		Category categoryByName = categoryDAO.findByCategoryName(categoryName);
 		
 		if(categoryByName != null && categoryById.getCategoryId() != categoryByName.getCategoryId()) {
 			String message = "Could not update category. Category with name "+ categoryByName.getName() + " already exists.";

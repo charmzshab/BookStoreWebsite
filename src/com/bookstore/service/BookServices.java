@@ -65,7 +65,7 @@ public class BookServices {
 	public void createBook() throws ServletException, IOException {
 		String title = request.getParameter("title");
 
-		Book existBook = bookDAO.findByTitle(title);
+		Book existBook = bookDAO.findByBookTitle(title);
 		if (existBook != null) {
 			String message = "Could not create book. A book with title: " + title + " already exists";
 			request.setAttribute("message", message);
@@ -171,7 +171,7 @@ public class BookServices {
 		
 		Book existBook = bookDAO.get(bookId);
 		
-		Book bookByTitle = bookDAO.findByTitle(title);
+		Book bookByTitle = bookDAO.findByBookTitle(title);
 		
 		if (bookByTitle != null && !existBook.equals(bookByTitle)) {
 			String message = "Could not update book because there's another book having same title.";
@@ -199,7 +199,7 @@ public class BookServices {
 	public void listBookByCategory() throws ServletException, IOException {
 		int categoryId = Integer.parseInt(request.getParameter("id"));
 		Category category = categoryDAO.get(categoryId);
-		List<Book> listBooks = bookDAO.listByCategory(categoryId);
+		List<Book> listBooks = bookDAO.listBooksByCategory(categoryId);
 		if (category == null) {
 			String message = "Sorry, the category ID " + categoryId + " is not available.";
 			request.setAttribute("message", message);

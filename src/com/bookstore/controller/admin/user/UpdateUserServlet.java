@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bookstore.service.UserServices;
 
+
 @WebServlet("/admin/update_user")
 public class UpdateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+  
+    public UpdateUserServlet() {
+        super();
+    }
 
-	public UpdateUserServlet() {
-		super();
-		
-	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		UserServices services = new UserServices(  request, response);
-		services.updateUser();
-
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		UserServices userServices = new UserServices(request,response);
+		userServices.updateUser();
 	}
 
 }

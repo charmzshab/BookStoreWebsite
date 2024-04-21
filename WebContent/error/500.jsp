@@ -12,7 +12,7 @@
 		<img src="${pageContext.request.contextPath }/images/BookstoreLogo.png" />
 	</div>
 	<div align="center">
-		<h1>Sorry, the server has econtered an error</h1>
+		<h1>Sorry, the server has encountered an error</h1>
 		<h3>Please check back later or contact our administrator</h3>
 	</div>
 	<div align="center">
