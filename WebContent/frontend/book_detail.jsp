@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${book.title}-Online Books Store</title>
 <link rel="stylesheet" href="css/style.css">
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />

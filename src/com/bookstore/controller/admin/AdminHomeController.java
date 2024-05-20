@@ -30,6 +30,12 @@ public class AdminHomeController extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
+
 	
 
 }

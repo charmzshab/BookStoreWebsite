@@ -9,7 +9,7 @@
 <title>Register as a Customer</title>
 
 <link rel="stylesheet" href="../css/style.css">
-<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../js/jquery.validate.min.js"></script>
 
 </head>
