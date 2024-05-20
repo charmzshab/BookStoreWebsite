@@ -4,23 +4,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Internal Server Error</title>
+<title>Customer Profile - Online Books  Store</title>
 </head>
 <body>
+	<jsp:directive.include file="header.jsp" />
 
 	<div align="center">
-		<img src="${pageContext.request.contextPath }/images/BookstoreLogo.png" />
+	<br/>
+	<h2>Customer Profile Page</h2>
+	<br/>	
 	</div>
-	<div align="center">
-		<h1>Sorry, the server has encountered an error</h1>
-		<h3>Please check back later or contact our administrator</h3>
-	</div>
-	<div align="center">
-
-		<a href="javascript:history.go(-1);">Go back</a>
-
-	</div>
-
+	<jsp:directive.include file="footer.jsp" />
 
 </body>
 </html>

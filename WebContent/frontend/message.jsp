@@ -4,22 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Not found error</title>
+<title>Ever Green - Online Book Store </title>
 </head>
 <body>
+	<jsp:directive.include file="header.jsp" />
 
 	<div align="center">
-		<img src="${pageContext.request.contextPath }/images/BookstoreLogo.png" />
+		<h3>${message}</h3>
 	</div>
-	<div align="center">
-		<h1>Sorry, the requested page could not be found</h1>
-	</div>
-	<div align="center">
-
-		<a href="javascript:history.go(-1);">Go back</a>
-
-	</div>
-
+	<jsp:directive.include file="footer.jsp" />
 
 </body>
 </html>
